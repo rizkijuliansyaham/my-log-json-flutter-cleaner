@@ -50,12 +50,13 @@ h2{font-size:14px;margin:0 0 8px;display:flex;justify-content:space-between;alig
 <script>
 const $=id=>document.getElementById(id);
 const PREFIX=/^.*?I\/flutter\s*\(\s*\d+\):\s?(?:[│|]\s?(?:[^\w\s{}\["\]]{1,3}\s?)?)?/;
+const LEVEL=/^\s*\[(?:log|info|debug|warn|warning|error|verbose|trace)\]\s*/i;
 const BARE=/^\s*[│|]\s?(?:[^\w\s{}\["\]]{1,3}\s?)?/;
 
 function clean(t){
   return t.split(/\r?\n/).map(l=>{
-    if(/I\/flutter/.test(l)) return l.replace(PREFIX,'');
-    return l.replace(BARE,'');
+    l=/I\/flutter/.test(l)?l.replace(PREFIX,''):l.replace(BARE,'');
+    return l.replace(LEVEL,'');
   }).join('\n').replace(/^[\s]*[┌└├─┄┈╭╰]+.*$/gm,'').trim();
 }
 
